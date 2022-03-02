@@ -1,17 +1,12 @@
 package de.herrlau.demo
 
+import de.herrlau.demo.kx.uuid
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.data.annotation.Id
-import org.springframework.data.jdbc.repository.query.Query
-import org.springframework.data.relational.core.mapping.Table
-import org.springframework.data.repository.CrudRepository
-import org.springframework.stereotype.Repository
+import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.jdbc.core.query
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @SpringBootApplication
 class DemoApplication
@@ -26,6 +21,9 @@ class MessageResource(val service: MessageService) {
 	@GetMapping
 	fun index(): List<Message> = service.findMessages()
 
+	@GetMapping("/{id}")
+	fun index(@PathVariable id: String): List<Message> = service.findMessageById(id)
+
 	@PostMapping
 	fun post(@RequestBody message: Message) {
 		service.post(message)
@@ -33,19 +31,20 @@ class MessageResource(val service: MessageService) {
 }
 
 @Service
-class MessageService(val db: MessageRepository) {
-	fun findMessages(): List<Message> = db.findMessages()
+class MessageService(val db: JdbcTemplate) {
+
+	fun findMessages(): List<Message> = db.query("select * from messages") { rs, _ ->
+		Message(rs.getString("id"), rs.getString("text"))
+	}
+
+	fun findMessageById(id: String): List<Message> = db.query("select * from messages where id = ?", id) { rs, _ ->
+		Message(rs.getString("id"), rs.getString("text"))
+	}
 
 	fun post(message: Message) {
-		db.save(message)
+		db.update("insert into messages values (?,?)", message.id ?: message.text.uuid(), message.text)
 	}
 }
 
-@Repository
-interface MessageRepository : CrudRepository<Message, String> {
-	@Query("select * from messages")
-	fun findMessages(): List<Message>
-}
 
-@Table("MESSAGES")
-data class Message(@Id val id: String?, val text: String)
+data class Message(val id: String?, val text: String)

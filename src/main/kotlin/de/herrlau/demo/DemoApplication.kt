@@ -15,13 +15,14 @@ fun main(args: Array<String>) {
 	runApplication<DemoApplication>(*args)
 }
 
-@RestController
+
+// @RestController("/messages")
 class MessageResource(val service: MessageService) {
 
 	@GetMapping
 	fun index(): List<Message> = service.findMessages()
 
-	@GetMapping("/{id}")
+	@GetMapping("{id}")
 	fun index(@PathVariable id: String): List<Message> = service.findMessageById(id)
 
 	@PostMapping

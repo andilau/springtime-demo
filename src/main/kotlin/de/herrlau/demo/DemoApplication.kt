@@ -57,5 +57,4 @@ class MessageService(val db: JdbcTemplate) {
 	}
 }
 
-
 data class Message(val id: String?, val text: String)

@@ -5,8 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.query
+import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @SpringBootApplication
 class DemoApplication
@@ -15,6 +18,13 @@ fun main(args: Array<String>) {
 	runApplication<DemoApplication>(*args)
 }
 
+@RestController
+class SocialController() {
+	@GetMapping("/user")
+	fun user(@AuthenticationPrincipal principal: OAuth2User): Map<String, Object> {
+		return Collections.singletonMap("name", principal.getAttribute("name"))
+	}
+}
 
 // @RestController("/messages")
 class MessageResource(val service: MessageService) {

@@ -21,6 +21,10 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation("org.webjars:jquery:3.6.0")
+	implementation("org.webjars:bootstrap:5.1.1")
+	implementation("org.webjars:webjars-locator-core:0.48")
+
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

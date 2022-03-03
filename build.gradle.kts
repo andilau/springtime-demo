@@ -24,6 +24,7 @@ dependencies {
 	implementation("org.webjars:jquery:3.6.0")
 	implementation("org.webjars:bootstrap:5.1.1")
 	implementation("org.webjars:webjars-locator-core:0.48")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-client:2.6.3")
 
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

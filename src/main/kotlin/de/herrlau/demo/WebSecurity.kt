@@ -9,6 +9,11 @@ import org.springframework.security.config.web.servlet.invoke
 class WebSecurity : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity?) {
         http {
+            cors { }
+            csrf { disable() }
+            logout {
+                logoutSuccessUrl = "/"
+            }
             authorizeRequests {
                 authorize("/**", permitAll)
             }

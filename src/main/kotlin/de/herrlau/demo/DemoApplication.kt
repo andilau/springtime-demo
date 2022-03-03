@@ -21,8 +21,8 @@ fun main(args: Array<String>) {
 @RestController
 class SocialController() {
 	@GetMapping("/user")
-	fun user(@AuthenticationPrincipal principal: OAuth2User): Map<String, Object> {
-		return Collections.singletonMap("name", principal.getAttribute("name"))
+	fun user(@AuthenticationPrincipal principal: OAuth2User): Map<String, Any?> {
+		return mapOf("name" to principal.getAttribute("name"))
 	}
 }
 

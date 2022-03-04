@@ -9,7 +9,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 @SpringBootApplication
 class DemoApplication
@@ -22,12 +21,13 @@ fun main(args: Array<String>) {
 class SocialController() {
 	@GetMapping("/user")
 	fun user(@AuthenticationPrincipal principal: OAuth2User): Map<String, Any?> {
-		return mapOf("name" to principal.getAttribute("name"))
+		if (principal.getAttribute<Any>("name") == null) return emptyMap()
+		return mapOf("name" to principal.getAttribute<Any>("name"))
 	}
 }
 
 // @RestController("/messages")
-class MessageResource(val service: MessageService) {
+class MessageResource(private val service: MessageService) {
 
 	@GetMapping
 	fun index(): List<Message> = service.findMessages()

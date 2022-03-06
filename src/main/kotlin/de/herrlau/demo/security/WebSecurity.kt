@@ -1,4 +1,4 @@
-package de.herrlau.demo
+package de.herrlau.demo.security
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -12,8 +12,8 @@ class WebSecurity : WebSecurityConfigurerAdapter() {
         http {
             cors { }
             csrf {
-                //disable()
-                csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse()
+                disable()
+                //csrfTokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse()
             }
             authorizeRequests {
                 authorize("/**", permitAll)
